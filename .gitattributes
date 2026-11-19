@@ -1,0 +1,5 @@
+# LF line endings everywhere, so Makefile and scripts work after a checkout on Windows
+* text=auto eol=lf
+*.png binary
+*.gz binary
+*.zstd binary

@@ -1,7 +1,7 @@
-# Образ курсу + Python-пакети з requirements.txt
+# Spark 4.2.0 image + Python packages from requirements.txt
 FROM apache/spark:4.2.0
 
-# spark-submit, pyspark без повного шляху (у базовому образі /opt/spark/bin немає в PATH)
+# spark-submit and pyspark without the full path (the base image does not put /opt/spark/bin in PATH)
 ENV PATH="/opt/spark/bin:/opt/spark/sbin:${PATH}"
 
 USER root

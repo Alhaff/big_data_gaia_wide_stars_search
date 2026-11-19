@@ -8,3 +8,4 @@ __pycache__/
 *.part
 2101.05282v3.pdf
 previous_info.md
+.env
