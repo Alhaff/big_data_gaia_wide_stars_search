@@ -1,0 +1,164 @@
+{
+ "zenith_time": "2026-01-31T00:00:00+02:00",
+ "centre_radec": [
+  130.6681159591244,
+  50.45
+ ],
+ "source": "https://cdn.gea.esac.esa.int/Gaia/gdr3/gaia_source/",
+ "files": [
+  {
+   "name": "GaiaSource_114329-116223.csv.gz",
+   "md5": "ccbb0d6f2f8f3f25970e9959276adc78",
+   "size_gz": 234915270,
+   "pix_first": 114329,
+   "pix_last": 116223
+  },
+  {
+   "name": "GaiaSource_116224-118619.csv.gz",
+   "md5": "064c939cd6aa07af209c76441ba12e99",
+   "size_gz": 238417071,
+   "pix_first": 116224,
+   "pix_last": 118619
+  },
+  {
+   "name": "GaiaSource_106071-106913.csv.gz",
+   "md5": "2e283176f61e68b734b3ed01ecfbad39",
+   "size_gz": 230569106,
+   "pix_first": 106071,
+   "pix_last": 106913
+  },
+  {
+   "name": "GaiaSource_104417-106070.csv.gz",
+   "md5": "e5cd26b4d2294f13a80b74808c3202e3",
+   "size_gz": 232989037,
+   "pix_first": 104417,
+   "pix_last": 106070
+  },
+  {
+   "name": "GaiaSource_102418-104416.csv.gz",
+   "md5": "06b517ee8bcb2d366900b0b9876573c9",
+   "size_gz": 233238272,
+   "pix_first": 102418,
+   "pix_last": 104416
+  },
+  {
+   "name": "GaiaSource_111410-112700.csv.gz",
+   "md5": "9ed5aedfef1706d7c4303757806b770e",
+   "size_gz": 235282487,
+   "pix_first": 111410,
+   "pix_last": 112700
+  },
+  {
+   "name": "GaiaSource_090621-093880.csv.gz",
+   "md5": "2f07fb35eef5224f5d52397ec7168d5d",
+   "size_gz": 242770741,
+   "pix_first": 90621,
+   "pix_last": 93880
+  },
+  {
+   "name": "GaiaSource_110425-111409.csv.gz",
+   "md5": "6d016990da4905a08f7da0d125e9a10a",
+   "size_gz": 232021194,
+   "pix_first": 110425,
+   "pix_last": 111409
+  },
+  {
+   "name": "GaiaSource_123647-125199.csv.gz",
+   "md5": "351a31ffdfd960570ac9f927b5aa8c67",
+   "size_gz": 233065684,
+   "pix_first": 123647,
+   "pix_last": 125199
+  },
+  {
+   "name": "GaiaSource_118620-121499.csv.gz",
+   "md5": "52ad88b69f825f9f5f37bc21fdde6b22",
+   "size_gz": 239260724,
+   "pix_first": 118620,
+   "pix_last": 121499
+  },
+  {
+   "name": "GaiaSource_080128-082787.csv.gz",
+   "md5": "ac549655e305ef5ffb5fb62acf92a8e4",
+   "size_gz": 237147922,
+   "pix_first": 80128,
+   "pix_last": 82787
+  },
+  {
+   "name": "GaiaSource_113460-114328.csv.gz",
+   "md5": "2b55252f0c4d2dfedb0f3fef6e65f61c",
+   "size_gz": 230028748,
+   "pix_first": 113460,
+   "pix_last": 114328
+  },
+  {
+   "name": "GaiaSource_101393-102417.csv.gz",
+   "md5": "9192af59a350e321f67fb0828726a7d6",
+   "size_gz": 231119571,
+   "pix_first": 101393,
+   "pix_last": 102417
+  },
+  {
+   "name": "GaiaSource_093881-097402.csv.gz",
+   "md5": "9664b94af94b5734858b0c6a92d05aea",
+   "size_gz": 244405071,
+   "pix_first": 93881,
+   "pix_last": 97402
+  },
+  {
+   "name": "GaiaSource_107445-108275.csv.gz",
+   "md5": "ca69bcb462e33e037eb27e7df50a7398",
+   "size_gz": 231449634,
+   "pix_first": 107445,
+   "pix_last": 108275
+  },
+  {
+   "name": "GaiaSource_112701-113459.csv.gz",
+   "md5": "4150a565e660cf039b0ad8d2c8dba0c7",
+   "size_gz": 231693219,
+   "pix_first": 112701,
+   "pix_last": 113459
+  },
+  {
+   "name": "GaiaSource_121500-123646.csv.gz",
+   "md5": "4dd0e9f5b761c204bf9f071fbb6011a1",
+   "size_gz": 235687751,
+   "pix_first": 121500,
+   "pix_last": 123646
+  },
+  {
+   "name": "GaiaSource_109811-110424.csv.gz",
+   "md5": "784cae7de8e99b3a46e2935b21a12f08",
+   "size_gz": 234461471,
+   "pix_first": 109811,
+   "pix_last": 110424
+  },
+  {
+   "name": "GaiaSource_125200-126263.csv.gz",
+   "md5": "aa9504c7ddb22863e9e2a8a9993cadc1",
+   "size_gz": 230774241,
+   "pix_first": 125200,
+   "pix_last": 126263
+  },
+  {
+   "name": "GaiaSource_126264-127785.csv.gz",
+   "md5": "3b58cecc5dce646efcd52ccd5496eb60",
+   "size_gz": 234109472,
+   "pix_first": 126264,
+   "pix_last": 127785
+  },
+  {
+   "name": "GaiaSource_077687-080127.csv.gz",
+   "md5": "34209de77ee8597e0b5b4969e5fb1e29",
+   "size_gz": 234967918,
+   "pix_first": 77687,
+   "pix_last": 80127
+  },
+  {
+   "name": "GaiaSource_099874-100751.csv.gz",
+   "md5": "331cc7cbbb1ecaef7b79223521e81b0a",
+   "size_gz": 230549995,
+   "pix_first": 99874,
+   "pix_last": 100751
+  }
+ ]
+}

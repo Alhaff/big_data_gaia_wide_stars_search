@@ -34,7 +34,7 @@ from pathlib import Path
 # ---- settings ---------------------------------------------------------------
 ZENITH_TIME = dt.datetime.fromisoformat("2026-01-31T00:00:00+02:00")  # midnight, Kyiv
 KYIV_LAT, KYIV_LON = 50.45, 30.52
-TARGET_ROWS = 12e6          # course needs >= 10M; keep a margin
+TARGET_ROWS = 12e6          # at least 10M rows are required; keep a margin
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"  # default; override with --path
 
 BASE_URL = "https://cdn.gea.esac.esa.int/Gaia/gdr3/gaia_source/"
@@ -86,12 +86,18 @@ def distance(ra1, dec1, ra2, dec2):
 
 # ---- file list and selection --------------------------------------------------
 def get(url):
+    """Fetch a URL and return the response body as bytes."""
     req = urllib.request.Request(url, headers={"User-Agent": "gaia-course-downloader"})
     with urllib.request.urlopen(req, timeout=120) as r:
         return r.read()
 
 
 def list_files():
+    """List all gaia_source files with their size, MD5 and HEALPix pixel range.
+
+    MD5 sums come from _MD5SUM.txt, sizes from the paginated bucket listing.
+    Returns a list of dicts.
+    """
     md5 = {name: h for h, name in (line.split() for line in get(BASE_URL + "_MD5SUM.txt").decode().splitlines())}
     files, marker = [], ""
     while True:  # S3-style listing, 1000 keys per page
@@ -106,6 +112,11 @@ def list_files():
 
 
 def select(files, ra0, dec0):
+    """Pick the files closest to (ra0, dec0) until TARGET_ROWS is reached.
+
+    Each file's row count is estimated from its compressed size, and its distance
+    is the median distance of its pixels from the given point. Returns the chosen files.
+    """
     rows_per_byte = TOTAL_ROWS / sum(f["size_gz"] for f in files)
     for f in files:
         f["est_rows"] = int(f["size_gz"] * rows_per_byte)
@@ -122,10 +133,12 @@ def select(files, ra0, dec0):
 
 # ---- download and measure -----------------------------------------------------
 def say(msg):
+    """Print a message prefixed with the current time."""
     print(time.strftime("%H:%M:%S"), msg, flush=True)
 
 
 def md5sum(path):
+    """Return the hex MD5 of a file, read in 1 MB chunks."""
     h = hashlib.md5()
     with open(path, "rb") as fh:
         while chunk := fh.read(1 << 20):
@@ -134,6 +147,11 @@ def md5sum(path):
 
 
 def download(f, raw_dir):
+    """Download one file into raw_dir and check its MD5.
+
+    A partial .part file is resumed with an HTTP Range request; a corrupted one is
+    deleted and downloaded again, up to 5 attempts. Returns "ok", "skip" or "fail".
+    """
     dst = raw_dir / f["name"]
     if dst.exists():
         return "skip"
@@ -171,6 +189,10 @@ def measure(path):
 
 
 def main():
+    """Parse arguments, select files around the Kyiv zenith, download and measure them.
+
+    The selection, sizes and row counts are written to measurements.json in the data directory.
+    """
     ap = argparse.ArgumentParser(description="Download Gaia DR3 files for the sky above Kyiv.")
     ap.add_argument("--path", type=Path, default=DATA_DIR,
                     help=f"data directory (default: {DATA_DIR})")

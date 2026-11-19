@@ -1,0 +1,116 @@
+{
+ "rows": 11682760,
+ "raw_bytes": 14877241409,
+ "files": [
+  {
+   "name": "GaiaSource_114329-116223.csv.gz",
+   "rows": 532515,
+   "raw_bytes": 677849500
+  },
+  {
+   "name": "GaiaSource_116224-118619.csv.gz",
+   "rows": 541518,
+   "raw_bytes": 688447903
+  },
+  {
+   "name": "GaiaSource_106071-106913.csv.gz",
+   "rows": 519233,
+   "raw_bytes": 664254646
+  },
+  {
+   "name": "GaiaSource_104417-106070.csv.gz",
+   "rows": 524496,
+   "raw_bytes": 669766609
+  },
+  {
+   "name": "GaiaSource_102418-104416.csv.gz",
+   "rows": 528464,
+   "raw_bytes": 672128675
+  },
+  {
+   "name": "GaiaSource_111410-112700.csv.gz",
+   "rows": 528295,
+   "raw_bytes": 675835940
+  },
+  {
+   "name": "GaiaSource_090621-093880.csv.gz",
+   "rows": 556480,
+   "raw_bytes": 702364655
+  },
+  {
+   "name": "GaiaSource_110425-111409.csv.gz",
+   "rows": 522189,
+   "raw_bytes": 667458477
+  },
+  {
+   "name": "GaiaSource_123647-125199.csv.gz",
+   "rows": 529529,
+   "raw_bytes": 673561978
+  },
+  {
+   "name": "GaiaSource_118620-121499.csv.gz",
+   "rows": 544980,
+   "raw_bytes": 691284986
+  },
+  {
+   "name": "GaiaSource_080128-082787.csv.gz",
+   "rows": 542581,
+   "raw_bytes": 686285086
+  },
+  {
+   "name": "GaiaSource_113460-114328.csv.gz",
+   "rows": 517572,
+   "raw_bytes": 661888120
+  },
+  {
+   "name": "GaiaSource_101393-102417.csv.gz",
+   "rows": 521699,
+   "raw_bytes": 666454506
+  },
+  {
+   "name": "GaiaSource_093881-097402.csv.gz",
+   "rows": 564474,
+   "raw_bytes": 709850858
+  },
+  {
+   "name": "GaiaSource_107445-108275.csv.gz",
+   "rows": 521243,
+   "raw_bytes": 667054277
+  },
+  {
+   "name": "GaiaSource_112701-113459.csv.gz",
+   "rows": 521279,
+   "raw_bytes": 666344886
+  },
+  {
+   "name": "GaiaSource_121500-123646.csv.gz",
+   "rows": 532079,
+   "raw_bytes": 678588753
+  },
+  {
+   "name": "GaiaSource_109811-110424.csv.gz",
+   "rows": 527137,
+   "raw_bytes": 674563640
+  },
+  {
+   "name": "GaiaSource_125200-126263.csv.gz",
+   "rows": 523242,
+   "raw_bytes": 666568834
+  },
+  {
+   "name": "GaiaSource_126264-127785.csv.gz",
+   "rows": 526728,
+   "raw_bytes": 672975754
+  },
+  {
+   "name": "GaiaSource_077687-080127.csv.gz",
+   "rows": 537942,
+   "raw_bytes": 679706309
+  },
+  {
+   "name": "GaiaSource_099874-100751.csv.gz",
+   "rows": 519085,
+   "raw_bytes": 664007017
+  }
+ ]
+}

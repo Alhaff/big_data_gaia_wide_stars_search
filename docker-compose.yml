@@ -1,0 +1,48 @@
+# Spark 4.2.0 у локальному режимі + History Server (схема як у ДЗ 7).
+#
+#   podman compose build                                  # один раз, потрібен інтернет
+#   podman compose up -d history                          # History Server -> http://localhost:18080
+#   podman compose run --rm --service-ports spark \
+#       spark-submit pipeline/run_all.py --input /work/sample      # вибірка
+#   podman compose run --rm --service-ports spark \
+#       spark-submit pipeline/run_all.py --input /data/raw         # повний датасет
+#
+# Поточний каталог змонтовано в /work. Повні дані Gaia (.csv.gz) - у /data/raw,
+# шлях на хості задає GAIA_RAW (за замовчуванням /media/data/big_data/gaia/raw).
+# Каталог El-Badry (етап 7) - у /data/elbadry, шлях на хості задає ELBADRY
+# (за замовчуванням /media/data/big_data/elbadry, створюється scripts/download_elbadry.py).
+
+x-spark: &spark-base
+  build: .
+  image: gaia-binaries-spark:4.2.0
+  working_dir: /work
+  environment:
+    PYTHONDONTWRITEBYTECODE: "1"
+    PYTHONUNBUFFERED: "1"
+    MPLCONFIGDIR: /tmp/matplotlib   # у користувача spark домашня тека /nonexistent, а healpy імпортує matplotlib
+    PYTHONPATH: /work:/opt/spark/python:/opt/spark/python/lib/py4j-0.10.9.9-src.zip
+  volumes:
+    - ./:/work:z
+    - ./conf:/opt/spark/conf:ro,z
+    - ./spark-events:/opt/spark/spark-events:z
+    - ${GAIA_RAW:-/media/data/big_data/gaia/raw}:/data/raw:ro,z
+    - ${ELBADRY:-/media/data/big_data/elbadry}:/data/elbadry:ro,z
+
+services:
+  spark:
+    <<: *spark-base
+    ports:
+      - "4040:4040"
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+
+  history:
+    <<: *spark-base
+    ports:
+      - "18080:18080"
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+      SPARK_HISTORY_OPTS: "-Dspark.history.fs.update.interval=5s"
+    command: ["/opt/spark/sbin/start-history-server.sh"]
+    restart: unless-stopped
