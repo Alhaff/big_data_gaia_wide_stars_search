@@ -1,0 +1,185 @@
+== Physical Plan ==
+AdaptiveSparkPlan (31)
++- Project (30)
+   +- BroadcastHashJoin LeftAnti BuildRight (29)
+      :- BroadcastHashJoin LeftAnti BuildRight (15)
+      :  :- Scan parquet  (1)
+      :  +- BroadcastExchange (14)
+      :     +- Project (13)
+      :        +- Filter (12)
+      :           +- HashAggregate (11)
+      :              +- Exchange (10)
+      :                 +- HashAggregate (9)
+      :                    +- Union (8)
+      :                       :- Project (4)
+      :                       :  +- Filter (3)
+      :                       :     +- Scan parquet  (2)
+      :                       +- Project (7)
+      :                          +- Filter (6)
+      :                             +- Scan parquet  (5)
+      +- BroadcastExchange (28)
+         +- Project (27)
+            +- Filter (26)
+               +- HashAggregate (25)
+                  +- Exchange (24)
+                     +- HashAggregate (23)
+                        +- Union (22)
+                           :- Project (18)
+                           :  +- Filter (17)
+                           :     +- Scan parquet  (16)
+                           +- Project (21)
+                              +- Filter (20)
+                                 +- Scan parquet  (19)
+
+
+(1) Scan parquet 
+Output [9]: [source_id_1#462L, source_id_2#463L, cell#464L, theta_arcsec#465, s_au#466, parallax_1#467, parallax_2#468, dmu#469, dmu_limit#470]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage2_pairs.parquet]
+ReadSchema: struct<source_id_1:bigint,source_id_2:bigint,cell:bigint,theta_arcsec:double,s_au:double,parallax_1:double,parallax_2:double,dmu:double,dmu_limit:double>
+
+(2) Scan parquet 
+Output [1]: [source_id_1#489L]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage2_pairs.parquet]
+PushedFilters: [IsNotNull(source_id_1)]
+ReadSchema: struct<source_id_1:bigint>
+
+(3) Filter
+Input [1]: [source_id_1#489L]
+Condition : isnotnull(source_id_1#489L)
+
+(4) Project
+Output [1]: [source_id_1#489L AS source_id#471L]
+Input [1]: [source_id_1#489L]
+
+(5) Scan parquet 
+Output [1]: [source_id_2#475L]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage2_pairs.parquet]
+PushedFilters: [IsNotNull(source_id_2)]
+ReadSchema: struct<source_id_2:bigint>
+
+(6) Filter
+Input [1]: [source_id_2#475L]
+Condition : isnotnull(source_id_2#475L)
+
+(7) Project
+Output [1]: [source_id_2#475L AS source_id#473L]
+Input [1]: [source_id_2#475L]
+
+(8) Union
+
+(9) HashAggregate
+Input [1]: [source_id#471L]
+Keys [1]: [source_id#471L]
+Functions [1]: [partial_count(1)]
+Aggregate Attributes [1]: [count#524L]
+Results [2]: [source_id#471L, count#525L]
+
+(10) Exchange
+Input [2]: [source_id#471L, count#525L]
+Arguments: hashpartitioning(source_id#471L, 200), ENSURE_REQUIREMENTS, [plan_id=759]
+
+(11) HashAggregate
+Input [2]: [source_id#471L, count#525L]
+Keys [1]: [source_id#471L]
+Functions [1]: [count(1)]
+Aggregate Attributes [1]: [count(1)#486L]
+Results [2]: [source_id#471L, count(1)#486L AS count#484L]
+
+(12) Filter
+Input [2]: [source_id#471L, count#484L]
+Condition : (count#484L > 3)
+
+(13) Project
+Output [1]: [source_id#471L AS source_id_1#488L]
+Input [2]: [source_id#471L, count#484L]
+
+(14) BroadcastExchange
+Input [1]: [source_id_1#488L]
+Arguments: HashedRelationBroadcastMode(List(input[0, bigint, true]),false), [plan_id=764]
+
+(15) BroadcastHashJoin
+Left keys [1]: [source_id_1#462L]
+Right keys [1]: [source_id_1#488L]
+Join type: LeftAnti
+Join condition: None
+
+(16) Scan parquet 
+Output [1]: [source_id_1#500L]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage2_pairs.parquet]
+PushedFilters: [IsNotNull(source_id_1)]
+ReadSchema: struct<source_id_1:bigint>
+
+(17) Filter
+Input [1]: [source_id_1#500L]
+Condition : isnotnull(source_id_1#500L)
+
+(18) Project
+Output [1]: [source_id_1#500L AS source_id#509L]
+Input [1]: [source_id_1#500L]
+
+(19) Scan parquet 
+Output [1]: [source_id_2#511L]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage2_pairs.parquet]
+PushedFilters: [IsNotNull(source_id_2)]
+ReadSchema: struct<source_id_2:bigint>
+
+(20) Filter
+Input [1]: [source_id_2#511L]
+Condition : isnotnull(source_id_2#511L)
+
+(21) Project
+Output [1]: [source_id_2#511L AS source_id#519L]
+Input [1]: [source_id_2#511L]
+
+(22) Union
+
+(23) HashAggregate
+Input [1]: [source_id#509L]
+Keys [1]: [source_id#509L]
+Functions [1]: [partial_count(1)]
+Aggregate Attributes [1]: [count#524L]
+Results [2]: [source_id#509L, count#525L]
+
+(24) Exchange
+Input [2]: [source_id#509L, count#525L]
+Arguments: hashpartitioning(source_id#509L, 200), ENSURE_REQUIREMENTS, [plan_id=766]
+
+(25) HashAggregate
+Input [2]: [source_id#509L, count#525L]
+Keys [1]: [source_id#509L]
+Functions [1]: [count(1)]
+Aggregate Attributes [1]: [count(1)#486L]
+Results [2]: [source_id#509L, count(1)#486L AS count#520L]
+
+(26) Filter
+Input [2]: [source_id#509L, count#520L]
+Condition : (count#520L > 3)
+
+(27) Project
+Output [1]: [source_id#509L AS source_id_2#499L]
+Input [2]: [source_id#509L, count#520L]
+
+(28) BroadcastExchange
+Input [1]: [source_id_2#499L]
+Arguments: HashedRelationBroadcastMode(List(input[0, bigint, true]),false), [plan_id=771]
+
+(29) BroadcastHashJoin
+Left keys [1]: [source_id_2#463L]
+Right keys [1]: [source_id_2#499L]
+Join type: LeftAnti
+Join condition: None
+
+(30) Project
+Output [9]: [source_id_2#463L, source_id_1#462L, cell#464L, theta_arcsec#465, s_au#466, parallax_1#467, parallax_2#468, dmu#469, dmu_limit#470]
+Input [9]: [source_id_1#462L, source_id_2#463L, cell#464L, theta_arcsec#465, s_au#466, parallax_1#467, parallax_2#468, dmu#469, dmu_limit#470]
+
+(31) AdaptiveSparkPlan
+Output [9]: [source_id_2#463L, source_id_1#462L, cell#464L, theta_arcsec#465, s_au#466, parallax_1#467, parallax_2#468, dmu#469, dmu_limit#470]
+Arguments: isFinalPlan=false
+
+

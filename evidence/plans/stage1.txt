@@ -1,0 +1,27 @@
+== Physical Plan ==
+* Project (4)
++- * Project (3)
+   +- * Filter (2)
+      +- Scan csv  (1)
+
+
+(1) Scan csv 
+Output [12]: [source_id#19, ra#22, dec#24, parallax#26, parallax_error#27, pmra#30, pmra_error#31, pmdec#32, pmdec_error#33, ruwe#72, phot_g_mean_mag#86, bp_rp#103]
+Batched: false
+Location: InMemoryFileIndex [file:/data/raw]
+PushedFilters: [IsNotNull(parallax), IsNotNull(pmra), IsNotNull(pmdec), IsNotNull(phot_g_mean_mag), IsNotNull(parallax_error)]
+ReadSchema: struct<source_id:string,ra:string,dec:string,parallax:string,parallax_error:string,pmra:string,pmra_error:string,pmdec:string,pmdec_error:string,ruwe:string,phot_g_mean_mag:string,bp_rp:string>
+
+(2) Filter [codegen id : 1]
+Input [12]: [source_id#19, ra#22, dec#24, parallax#26, parallax_error#27, pmra#30, pmra_error#31, pmdec#32, pmdec_error#33, ruwe#72, phot_g_mean_mag#86, bp_rp#103]
+Condition : (((((((((((isnotnull(parallax#26) AND isnotnull(pmra#30)) AND isnotnull(pmdec#32)) AND isnotnull(phot_g_mean_mag#86)) AND isnotnull(parallax_error#27)) AND isnotnull(cast(parallax#26 as double))) AND isnotnull(cast(pmra#30 as double))) AND isnotnull(cast(pmdec#32 as double))) AND isnotnull(cast(phot_g_mean_mag#86 as double))) AND ((cast(parallax#26 as double) / cast(parallax_error#27 as double)) > 5.0)) AND (cast(parallax#26 as double) >= 1.0)) AND (cast(parallax#26 as double) <= 10.0))
+
+(3) Project [codegen id : 1]
+Output [12]: [cast(source_id#19 as bigint) AS source_id#169L, cast(ra#22 as double) AS ra#170, cast(dec#24 as double) AS dec#171, cast(parallax#26 as double) AS parallax#172, cast(parallax_error#27 as double) AS parallax_error#173, cast(pmra#30 as double) AS pmra#174, cast(pmra_error#31 as double) AS pmra_error#175, cast(pmdec#32 as double) AS pmdec#176, cast(pmdec_error#33 as double) AS pmdec_error#177, cast(phot_g_mean_mag#86 as double) AS phot_g_mean_mag#178, cast(bp_rp#103 as double) AS bp_rp#179, cast(ruwe#72 as double) AS ruwe#180]
+Input [12]: [source_id#19, ra#22, dec#24, parallax#26, parallax_error#27, pmra#30, pmra_error#31, pmdec#32, pmdec_error#33, ruwe#72, phot_g_mean_mag#86, bp_rp#103]
+
+(4) Project [codegen id : 1]
+Output [14]: [source_id#169L, ra#170, dec#171, parallax#172, parallax_error#173, pmra#174, pmra_error#175, pmdec#176, pmdec_error#177, phot_g_mean_mag#178, bp_rp#179, ruwe#180, shiftright(source_id#169L, 43) AS cell#233L, 0 AS origin#234]
+Input [12]: [source_id#169L, ra#170, dec#171, parallax#172, parallax_error#173, pmra#174, pmra_error#175, pmdec#176, pmdec_error#177, phot_g_mean_mag#178, bp_rp#179, ruwe#180]
+
+

@@ -1,0 +1,191 @@
+== Physical Plan ==
+AdaptiveSparkPlan (35)
++- Project (34)
+   +- SortMergeJoin LeftAnti (33)
+      :- Sort (19)
+      :  +- Exchange (18)
+      :     +- SortMergeJoin LeftAnti (17)
+      :        :- Sort (3)
+      :        :  +- Exchange (2)
+      :        :     +- Scan ExistingRDD (1)
+      :        +- Sort (16)
+      :           +- Project (15)
+      :              +- Filter (14)
+      :                 +- HashAggregate (13)
+      :                    +- Exchange (12)
+      :                       +- HashAggregate (11)
+      :                          +- Union (10)
+      :                             :- Project (6)
+      :                             :  +- Filter (5)
+      :                             :     +- Scan ExistingRDD (4)
+      :                             +- Project (9)
+      :                                +- Filter (8)
+      :                                   +- Scan ExistingRDD (7)
+      +- Sort (32)
+         +- Project (31)
+            +- Filter (30)
+               +- HashAggregate (29)
+                  +- Exchange (28)
+                     +- HashAggregate (27)
+                        +- Union (26)
+                           :- Project (22)
+                           :  +- Filter (21)
+                           :     +- Scan ExistingRDD (20)
+                           +- Project (25)
+                              +- Filter (24)
+                                 +- Scan ExistingRDD (23)
+
+
+(1) Scan ExistingRDD
+Output [9]: [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+Arguments: [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861], MapPartitionsRDD[397] at localCheckpoint at DirectMethodHandleAccessor.java:103, ExistingRDD, UnknownPartitioning(0)
+
+(2) Exchange
+Input [9]: [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+Arguments: hashpartitioning(source_id_1#853L, 200), ENSURE_REQUIREMENTS, [plan_id=4650]
+
+(3) Sort
+Input [9]: [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+Arguments: [source_id_1#853L ASC NULLS FIRST], false, 0
+
+(4) Scan ExistingRDD
+Output [9]: [source_id_1#878L, source_id_2#879L, cell#880L, theta_arcsec#881, s_au#882, parallax_1#883, parallax_2#884, dmu#885, dmu_limit#886]
+Arguments: [source_id_1#878L, source_id_2#879L, cell#880L, theta_arcsec#881, s_au#882, parallax_1#883, parallax_2#884, dmu#885, dmu_limit#886], MapPartitionsRDD[397] at localCheckpoint at DirectMethodHandleAccessor.java:103, ExistingRDD, UnknownPartitioning(0)
+
+(5) Filter
+Input [9]: [source_id_1#878L, source_id_2#879L, cell#880L, theta_arcsec#881, s_au#882, parallax_1#883, parallax_2#884, dmu#885, dmu_limit#886]
+Condition : isnotnull(source_id_1#878L)
+
+(6) Project
+Output [1]: [source_id_1#878L AS source_id#862L]
+Input [9]: [source_id_1#878L, source_id_2#879L, cell#880L, theta_arcsec#881, s_au#882, parallax_1#883, parallax_2#884, dmu#885, dmu_limit#886]
+
+(7) Scan ExistingRDD
+Output [9]: [source_id_1#864L, source_id_2#865L, cell#866L, theta_arcsec#867, s_au#868, parallax_1#869, parallax_2#870, dmu#871, dmu_limit#872]
+Arguments: [source_id_1#864L, source_id_2#865L, cell#866L, theta_arcsec#867, s_au#868, parallax_1#869, parallax_2#870, dmu#871, dmu_limit#872], MapPartitionsRDD[397] at localCheckpoint at DirectMethodHandleAccessor.java:103, ExistingRDD, UnknownPartitioning(0)
+
+(8) Filter
+Input [9]: [source_id_1#864L, source_id_2#865L, cell#866L, theta_arcsec#867, s_au#868, parallax_1#869, parallax_2#870, dmu#871, dmu_limit#872]
+Condition : isnotnull(source_id_2#865L)
+
+(9) Project
+Output [1]: [source_id_2#865L AS source_id#863L]
+Input [9]: [source_id_1#864L, source_id_2#865L, cell#866L, theta_arcsec#867, s_au#868, parallax_1#869, parallax_2#870, dmu#871, dmu_limit#872]
+
+(10) Union
+
+(11) HashAggregate
+Input [1]: [source_id#862L]
+Keys [1]: [source_id#862L]
+Functions [1]: [partial_count(1)]
+Aggregate Attributes [1]: [count#910L]
+Results [2]: [source_id#862L, count#911L]
+
+(12) Exchange
+Input [2]: [source_id#862L, count#911L]
+Arguments: hashpartitioning(source_id#862L, 200), ENSURE_REQUIREMENTS, [plan_id=4644]
+
+(13) HashAggregate
+Input [2]: [source_id#862L, count#911L]
+Keys [1]: [source_id#862L]
+Functions [1]: [count(1)]
+Aggregate Attributes [1]: [count(1)#875L]
+Results [2]: [source_id#862L, count(1)#875L AS count#873L]
+
+(14) Filter
+Input [2]: [source_id#862L, count#873L]
+Condition : (count#873L > 3)
+
+(15) Project
+Output [1]: [source_id#862L AS source_id_1#877L]
+Input [2]: [source_id#862L, count#873L]
+
+(16) Sort
+Input [1]: [source_id_1#877L]
+Arguments: [source_id_1#877L ASC NULLS FIRST], false, 0
+
+(17) SortMergeJoin
+Left keys [1]: [source_id_1#853L]
+Right keys [1]: [source_id_1#877L]
+Join type: LeftAnti
+Join condition: None
+
+(18) Exchange
+Input [9]: [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+Arguments: hashpartitioning(source_id_2#854L, 200), ENSURE_REQUIREMENTS, [plan_id=4660]
+
+(19) Sort
+Input [9]: [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+Arguments: [source_id_2#854L ASC NULLS FIRST], false, 0
+
+(20) Scan ExistingRDD
+Output [9]: [source_id_1#888L, source_id_2#889L, cell#890L, theta_arcsec#891, s_au#892, parallax_1#893, parallax_2#894, dmu#895, dmu_limit#896]
+Arguments: [source_id_1#888L, source_id_2#889L, cell#890L, theta_arcsec#891, s_au#892, parallax_1#893, parallax_2#894, dmu#895, dmu_limit#896], MapPartitionsRDD[397] at localCheckpoint at DirectMethodHandleAccessor.java:103, ExistingRDD, UnknownPartitioning(0)
+
+(21) Filter
+Input [9]: [source_id_1#888L, source_id_2#889L, cell#890L, theta_arcsec#891, s_au#892, parallax_1#893, parallax_2#894, dmu#895, dmu_limit#896]
+Condition : isnotnull(source_id_1#888L)
+
+(22) Project
+Output [1]: [source_id_1#888L AS source_id#897L]
+Input [9]: [source_id_1#888L, source_id_2#889L, cell#890L, theta_arcsec#891, s_au#892, parallax_1#893, parallax_2#894, dmu#895, dmu_limit#896]
+
+(23) Scan ExistingRDD
+Output [9]: [source_id_1#898L, source_id_2#899L, cell#900L, theta_arcsec#901, s_au#902, parallax_1#903, parallax_2#904, dmu#905, dmu_limit#906]
+Arguments: [source_id_1#898L, source_id_2#899L, cell#900L, theta_arcsec#901, s_au#902, parallax_1#903, parallax_2#904, dmu#905, dmu_limit#906], MapPartitionsRDD[397] at localCheckpoint at DirectMethodHandleAccessor.java:103, ExistingRDD, UnknownPartitioning(0)
+
+(24) Filter
+Input [9]: [source_id_1#898L, source_id_2#899L, cell#900L, theta_arcsec#901, s_au#902, parallax_1#903, parallax_2#904, dmu#905, dmu_limit#906]
+Condition : isnotnull(source_id_2#899L)
+
+(25) Project
+Output [1]: [source_id_2#899L AS source_id#907L]
+Input [9]: [source_id_1#898L, source_id_2#899L, cell#900L, theta_arcsec#901, s_au#902, parallax_1#903, parallax_2#904, dmu#905, dmu_limit#906]
+
+(26) Union
+
+(27) HashAggregate
+Input [1]: [source_id#897L]
+Keys [1]: [source_id#897L]
+Functions [1]: [partial_count(1)]
+Aggregate Attributes [1]: [count#910L]
+Results [2]: [source_id#897L, count#911L]
+
+(28) Exchange
+Input [2]: [source_id#897L, count#911L]
+Arguments: hashpartitioning(source_id#897L, 200), ENSURE_REQUIREMENTS, [plan_id=4654]
+
+(29) HashAggregate
+Input [2]: [source_id#897L, count#911L]
+Keys [1]: [source_id#897L]
+Functions [1]: [count(1)]
+Aggregate Attributes [1]: [count(1)#875L]
+Results [2]: [source_id#897L, count(1)#875L AS count#908L]
+
+(30) Filter
+Input [2]: [source_id#897L, count#908L]
+Condition : (count#908L > 3)
+
+(31) Project
+Output [1]: [source_id#897L AS source_id_2#887L]
+Input [2]: [source_id#897L, count#908L]
+
+(32) Sort
+Input [1]: [source_id_2#887L]
+Arguments: [source_id_2#887L ASC NULLS FIRST], false, 0
+
+(33) SortMergeJoin
+Left keys [1]: [source_id_2#854L]
+Right keys [1]: [source_id_2#887L]
+Join type: LeftAnti
+Join condition: None
+
+(34) Project
+Output [9]: [source_id_2#854L, source_id_1#853L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+Input [9]: [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+
+(35) AdaptiveSparkPlan
+Output [9]: [source_id_2#854L, source_id_1#853L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+Arguments: isFinalPlan=false
+
+

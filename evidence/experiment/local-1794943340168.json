@@ -1,0 +1,10 @@
+{
+ "run": {
+  "app_id": "local-1794943340168"
+ },
+ "stage2": {
+  "variant": "all_neighbours",
+  "pairs_out": 51274,
+  "seconds": 226.8
+ }
+}

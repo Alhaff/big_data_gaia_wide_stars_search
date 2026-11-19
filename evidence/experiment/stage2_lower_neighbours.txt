@@ -1,0 +1,41 @@
+== Physical Plan ==
+AdaptiveSparkPlan (7)
++- FlatMapGroupsInPandas (6)
+   +- Sort (5)
+      +- Exchange (4)
+         +- Project (3)
+            +- MapInPandas (2)
+               +- Scan parquet  (1)
+
+
+(1) Scan parquet 
+Output [14]: [source_id#279L, ra#280, dec#281, parallax#282, parallax_error#283, pmra#284, pmra_error#285, pmdec#286, pmdec_error#287, phot_g_mean_mag#288, bp_rp#289, ruwe#290, cell#291L, origin#292]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage1_stars.parquet]
+ReadSchema: struct<source_id:bigint,ra:double,dec:double,parallax:double,parallax_error:double,pmra:double,pmra_error:double,pmdec:double,pmdec_error:double,phot_g_mean_mag:double,bp_rp:double,ruwe:double,cell:bigint,origin:int>
+
+(2) MapInPandas
+Input [14]: [source_id#279L, ra#280, dec#281, parallax#282, parallax_error#283, pmra#284, pmra_error#285, pmdec#286, pmdec_error#287, phot_g_mean_mag#288, bp_rp#289, ruwe#290, cell#291L, origin#292]
+Arguments: add_copies(source_id#279L, ra#280, dec#281, parallax#282, parallax_error#283, pmra#284, pmra_error#285, pmdec#286, pmdec_error#287, phot_g_mean_mag#288, bp_rp#289, ruwe#290, cell#291L, origin#292)#293, [source_id#294L, ra#295, dec#296, parallax#297, parallax_error#298, pmra#299, pmra_error#300, pmdec#301, pmdec_error#302, phot_g_mean_mag#303, bp_rp#304, ruwe#305, cell#306L, origin#307, is_home#308], false
+
+(3) Project
+Output [16]: [cell#306L, source_id#294L, ra#295, dec#296, parallax#297, parallax_error#298, pmra#299, pmra_error#300, pmdec#301, pmdec_error#302, phot_g_mean_mag#303, bp_rp#304, ruwe#305, cell#306L, origin#307, is_home#308]
+Input [15]: [source_id#294L, ra#295, dec#296, parallax#297, parallax_error#298, pmra#299, pmra_error#300, pmdec#301, pmdec_error#302, phot_g_mean_mag#303, bp_rp#304, ruwe#305, cell#306L, origin#307, is_home#308]
+
+(4) Exchange
+Input [16]: [cell#306L, source_id#294L, ra#295, dec#296, parallax#297, parallax_error#298, pmra#299, pmra_error#300, pmdec#301, pmdec_error#302, phot_g_mean_mag#303, bp_rp#304, ruwe#305, cell#306L, origin#307, is_home#308]
+Arguments: hashpartitioning(cell#306L, 200), ENSURE_REQUIREMENTS, [plan_id=157]
+
+(5) Sort
+Input [16]: [cell#306L, source_id#294L, ra#295, dec#296, parallax#297, parallax_error#298, pmra#299, pmra_error#300, pmdec#301, pmdec_error#302, phot_g_mean_mag#303, bp_rp#304, ruwe#305, cell#306L, origin#307, is_home#308]
+Arguments: [cell#306L ASC NULLS FIRST], false, 0
+
+(6) FlatMapGroupsInPandas
+Input [16]: [cell#306L, source_id#294L, ra#295, dec#296, parallax#297, parallax_error#298, pmra#299, pmra_error#300, pmdec#301, pmdec_error#302, phot_g_mean_mag#303, bp_rp#304, ruwe#305, cell#306L, origin#307, is_home#308]
+Arguments: [cell#306L], pairs_in_cell(source_id#294L, ra#295, dec#296, parallax#297, parallax_error#298, pmra#299, pmra_error#300, pmdec#301, pmdec_error#302, phot_g_mean_mag#303, bp_rp#304, ruwe#305, cell#306L, origin#307, is_home#308)#310, [source_id_1#311L, source_id_2#312L, cell#313L, theta_arcsec#314, s_au#315, parallax_1#316, parallax_2#317, dmu#318, dmu_limit#319]
+
+(7) AdaptiveSparkPlan
+Output [9]: [source_id_1#311L, source_id_2#312L, cell#313L, theta_arcsec#314, s_au#315, parallax_1#316, parallax_2#317, dmu#318, dmu_limit#319]
+Arguments: isFinalPlan=false
+
+

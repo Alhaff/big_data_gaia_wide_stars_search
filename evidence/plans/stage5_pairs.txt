@@ -1,0 +1,56 @@
+== Physical Plan ==
+AdaptiveSparkPlan (10)
++- FlatMapGroupsInPandas (9)
+   +- Sort (8)
+      +- Exchange (7)
+         +- Project (6)
+            +- MapInPandas (5)
+               +- Union (4)
+                  :- Scan parquet  (1)
+                  +- MapInPandas (3)
+                     +- Scan parquet  (2)
+
+
+(1) Scan parquet 
+Output [14]: [source_id#791L, ra#792, dec#793, parallax#794, parallax_error#795, pmra#796, pmra_error#797, pmdec#798, pmdec_error#799, phot_g_mean_mag#800, bp_rp#801, ruwe#802, cell#803L, origin#804]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage1_stars.parquet]
+ReadSchema: struct<source_id:bigint,ra:double,dec:double,parallax:double,parallax_error:double,pmra:double,pmra_error:double,pmdec:double,pmdec_error:double,phot_g_mean_mag:double,bp_rp:double,ruwe:double,cell:bigint,origin:int>
+
+(2) Scan parquet 
+Output [14]: [source_id#821L, ra#822, dec#823, parallax#824, parallax_error#825, pmra#826, pmra_error#827, pmdec#828, pmdec_error#829, phot_g_mean_mag#830, bp_rp#831, ruwe#832, cell#833L, origin#834]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage1_stars.parquet]
+ReadSchema: struct<source_id:bigint,ra:double,dec:double,parallax:double,parallax_error:double,pmra:double,pmra_error:double,pmdec:double,pmdec_error:double,phot_g_mean_mag:double,bp_rp:double,ruwe:double,cell:bigint,origin:int>
+
+(3) MapInPandas
+Input [14]: [source_id#821L, ra#822, dec#823, parallax#824, parallax_error#825, pmra#826, pmra_error#827, pmdec#828, pmdec_error#829, phot_g_mean_mag#830, bp_rp#831, ruwe#832, cell#833L, origin#834]
+Arguments: shift_catalog(source_id#821L, ra#822, dec#823, parallax#824, parallax_error#825, pmra#826, pmra_error#827, pmdec#828, pmdec_error#829, phot_g_mean_mag#830, bp_rp#831, ruwe#832, cell#833L, origin#834)#805, [source_id#806L, ra#807, dec#808, parallax#809, parallax_error#810, pmra#811, pmra_error#812, pmdec#813, pmdec_error#814, phot_g_mean_mag#815, bp_rp#816, ruwe#817, cell#818L, origin#819], false
+
+(4) Union
+
+(5) MapInPandas
+Input [14]: [source_id#791L, ra#792, dec#793, parallax#794, parallax_error#795, pmra#796, pmra_error#797, pmdec#798, pmdec_error#799, phot_g_mean_mag#800, bp_rp#801, ruwe#802, cell#803L, origin#804]
+Arguments: add_copies(source_id#791L, ra#792, dec#793, parallax#794, parallax_error#795, pmra#796, pmra_error#797, pmdec#798, pmdec_error#799, phot_g_mean_mag#800, bp_rp#801, ruwe#802, cell#803L, origin#804)#836, [source_id#837L, ra#838, dec#839, parallax#840, parallax_error#841, pmra#842, pmra_error#843, pmdec#844, pmdec_error#845, phot_g_mean_mag#846, bp_rp#847, ruwe#848, cell#849L, origin#850, is_home#851], false
+
+(6) Project
+Output [16]: [cell#849L, source_id#837L, ra#838, dec#839, parallax#840, parallax_error#841, pmra#842, pmra_error#843, pmdec#844, pmdec_error#845, phot_g_mean_mag#846, bp_rp#847, ruwe#848, cell#849L, origin#850, is_home#851]
+Input [15]: [source_id#837L, ra#838, dec#839, parallax#840, parallax_error#841, pmra#842, pmra_error#843, pmdec#844, pmdec_error#845, phot_g_mean_mag#846, bp_rp#847, ruwe#848, cell#849L, origin#850, is_home#851]
+
+(7) Exchange
+Input [16]: [cell#849L, source_id#837L, ra#838, dec#839, parallax#840, parallax_error#841, pmra#842, pmra_error#843, pmdec#844, pmdec_error#845, phot_g_mean_mag#846, bp_rp#847, ruwe#848, cell#849L, origin#850, is_home#851]
+Arguments: hashpartitioning(cell#849L, 200), ENSURE_REQUIREMENTS, [plan_id=4474]
+
+(8) Sort
+Input [16]: [cell#849L, source_id#837L, ra#838, dec#839, parallax#840, parallax_error#841, pmra#842, pmra_error#843, pmdec#844, pmdec_error#845, phot_g_mean_mag#846, bp_rp#847, ruwe#848, cell#849L, origin#850, is_home#851]
+Arguments: [cell#849L ASC NULLS FIRST], false, 0
+
+(9) FlatMapGroupsInPandas
+Input [16]: [cell#849L, source_id#837L, ra#838, dec#839, parallax#840, parallax_error#841, pmra#842, pmra_error#843, pmdec#844, pmdec_error#845, phot_g_mean_mag#846, bp_rp#847, ruwe#848, cell#849L, origin#850, is_home#851]
+Arguments: [cell#849L], chance_pairs_in_cell(source_id#837L, ra#838, dec#839, parallax#840, parallax_error#841, pmra#842, pmra_error#843, pmdec#844, pmdec_error#845, phot_g_mean_mag#846, bp_rp#847, ruwe#848, cell#849L, origin#850, is_home#851)#852, [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+
+(10) AdaptiveSparkPlan
+Output [9]: [source_id_1#853L, source_id_2#854L, cell#855L, theta_arcsec#856, s_au#857, parallax_1#858, parallax_2#859, dmu#860, dmu_limit#861]
+Arguments: isFinalPlan=false
+
+

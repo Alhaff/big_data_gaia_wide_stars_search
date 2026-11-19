@@ -1,0 +1,74 @@
+{
+ "run": {
+  "app_id": "local-1794941788737"
+ },
+ "stage1": {
+  "total": 11682760,
+  "has_parallax": 1662113,
+  "has_proper_motion": 1662113,
+  "has_g_mag": 11008,
+  "parallax_over_error": 6626729,
+  "distance_100_1000pc": 6900374,
+  "stars_out": 1782969,
+  "seconds": 123.3
+ },
+ "stage2": {
+  "variant": "lower_neighbours",
+  "pairs_out": 51274,
+  "rows_into_shuffle": 8939358,
+  "comparisons": 405304244.0,
+  "seconds": 188.6
+ },
+ "stage2_skew": {
+  "keys": 37878,
+  "rows": 8939358,
+  "max": 652,
+  "median": 224,
+  "top10_share": 0.0006
+ },
+ "stage3": {
+  "pairs_out": 51155,
+  "companions_histogram": {
+   "1": 98677,
+   "2": 1754,
+   "3": 67,
+   "4": 24,
+   "5": 4,
+   "6": 5,
+   "8": 2
+  },
+  "seconds": 3.9
+ },
+ "stage4": {
+  "iterations": 7,
+  "system_sizes": {
+   "9": 2,
+   "5": 2,
+   "3": 779,
+   "2": 48992,
+   "4": 32
+  },
+  "seconds": 11.9
+ },
+ "stage5": {
+  "chance_pairs_out": 2252,
+  "seconds": 253.0
+ },
+ "stage6": {
+  "seconds": 0.8
+ },
+ "stage7": {
+  "theirs": 46959,
+  "theirs_r01": 45129,
+  "ours_stage2": 51274,
+  "ours_stage3": 51155,
+  "theirs_in_stage2": 46959,
+  "theirs_in_stage3": 46959,
+  "theirs_r01_in_stage3": 45129,
+  "completeness_stage2": 1.0,
+  "completeness_stage3": 1.0,
+  "completeness_stage3_r01": 1.0,
+  "purity_stage3": 0.918,
+  "seconds": 9.5
+ }
+}

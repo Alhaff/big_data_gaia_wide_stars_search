@@ -1,0 +1,62 @@
+== Physical Plan ==
+AdaptiveSparkPlan (10)
++- HashAggregate (9)
+   +- Exchange (8)
+      +- HashAggregate (7)
+         +- FlatMapGroupsInPandas (6)
+            +- Sort (5)
+               +- Exchange (4)
+                  +- Project (3)
+                     +- MapInPandas (2)
+                        +- Scan parquet  (1)
+
+
+(1) Scan parquet 
+Output [14]: [source_id#0L, ra#1, dec#2, parallax#3, parallax_error#4, pmra#5, pmra_error#6, pmdec#7, pmdec_error#8, phot_g_mean_mag#9, bp_rp#10, ruwe#11, cell#12L, origin#13]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage1_stars.parquet]
+ReadSchema: struct<source_id:bigint,ra:double,dec:double,parallax:double,parallax_error:double,pmra:double,pmra_error:double,pmdec:double,pmdec_error:double,phot_g_mean_mag:double,bp_rp:double,ruwe:double,cell:bigint,origin:int>
+
+(2) MapInPandas
+Input [14]: [source_id#0L, ra#1, dec#2, parallax#3, parallax_error#4, pmra#5, pmra_error#6, pmdec#7, pmdec_error#8, phot_g_mean_mag#9, bp_rp#10, ruwe#11, cell#12L, origin#13]
+Arguments: partial(source_id#0L, ra#1, dec#2, parallax#3, parallax_error#4, pmra#5, pmra_error#6, pmdec#7, pmdec_error#8, phot_g_mean_mag#9, bp_rp#10, ruwe#11, cell#12L, origin#13)#14, [source_id#15L, ra#16, dec#17, parallax#18, parallax_error#19, pmra#20, pmra_error#21, pmdec#22, pmdec_error#23, phot_g_mean_mag#24, bp_rp#25, ruwe#26, cell#27L, origin#28, is_home#29], false
+
+(3) Project
+Output [16]: [cell#27L, source_id#15L, ra#16, dec#17, parallax#18, parallax_error#19, pmra#20, pmra_error#21, pmdec#22, pmdec_error#23, phot_g_mean_mag#24, bp_rp#25, ruwe#26, cell#27L, origin#28, is_home#29]
+Input [15]: [source_id#15L, ra#16, dec#17, parallax#18, parallax_error#19, pmra#20, pmra_error#21, pmdec#22, pmdec_error#23, phot_g_mean_mag#24, bp_rp#25, ruwe#26, cell#27L, origin#28, is_home#29]
+
+(4) Exchange
+Input [16]: [cell#27L, source_id#15L, ra#16, dec#17, parallax#18, parallax_error#19, pmra#20, pmra_error#21, pmdec#22, pmdec_error#23, phot_g_mean_mag#24, bp_rp#25, ruwe#26, cell#27L, origin#28, is_home#29]
+Arguments: hashpartitioning(cell#27L, 200), ENSURE_REQUIREMENTS, [plan_id=23]
+
+(5) Sort
+Input [16]: [cell#27L, source_id#15L, ra#16, dec#17, parallax#18, parallax_error#19, pmra#20, pmra_error#21, pmdec#22, pmdec_error#23, phot_g_mean_mag#24, bp_rp#25, ruwe#26, cell#27L, origin#28, is_home#29]
+Arguments: [cell#27L ASC NULLS FIRST], false, 0
+
+(6) FlatMapGroupsInPandas
+Input [16]: [cell#27L, source_id#15L, ra#16, dec#17, parallax#18, parallax_error#19, pmra#20, pmra_error#21, pmdec#22, pmdec_error#23, phot_g_mean_mag#24, bp_rp#25, ruwe#26, cell#27L, origin#28, is_home#29]
+Arguments: [cell#27L], pairs_in_cell(source_id#15L, ra#16, dec#17, parallax#18, parallax_error#19, pmra#20, pmra_error#21, pmdec#22, pmdec_error#23, phot_g_mean_mag#24, bp_rp#25, ruwe#26, cell#27L, origin#28, is_home#29)#31, [source_id_1#32L, source_id_2#33L, cell#34L, theta_arcsec#35, s_au#36, parallax_1#37, parallax_2#38, dmu#39, dmu_limit#40]
+
+(7) HashAggregate
+Input [9]: [source_id_1#32L, source_id_2#33L, cell#34L, theta_arcsec#35, s_au#36, parallax_1#37, parallax_2#38, dmu#39, dmu_limit#40]
+Keys [2]: [source_id_1#32L, source_id_2#33L]
+Functions [7]: [partial_first(cell#34L, false), partial_first(theta_arcsec#35, false), partial_first(s_au#36, false), partial_first(parallax_1#37, false), partial_first(parallax_2#38, false), partial_first(dmu#39, false), partial_first(dmu_limit#40, false)]
+Aggregate Attributes [14]: [first#55L, valueSet#56, first#57, valueSet#58, first#59, valueSet#60, first#61, valueSet#62, first#63, valueSet#64, first#65, valueSet#66, first#67, valueSet#68]
+Results [16]: [source_id_1#32L, source_id_2#33L, first#69L, valueSet#70, first#71, valueSet#72, first#73, valueSet#74, first#75, valueSet#76, first#77, valueSet#78, first#79, valueSet#80, first#81, valueSet#82]
+
+(8) Exchange
+Input [16]: [source_id_1#32L, source_id_2#33L, first#69L, valueSet#70, first#71, valueSet#72, first#73, valueSet#74, first#75, valueSet#76, first#77, valueSet#78, first#79, valueSet#80, first#81, valueSet#82]
+Arguments: hashpartitioning(source_id_1#32L, source_id_2#33L, 200), ENSURE_REQUIREMENTS, [plan_id=28]
+
+(9) HashAggregate
+Input [16]: [source_id_1#32L, source_id_2#33L, first#69L, valueSet#70, first#71, valueSet#72, first#73, valueSet#74, first#75, valueSet#76, first#77, valueSet#78, first#79, valueSet#80, first#81, valueSet#82]
+Keys [2]: [source_id_1#32L, source_id_2#33L]
+Functions [7]: [first(cell#34L, false), first(theta_arcsec#35, false), first(s_au#36, false), first(parallax_1#37, false), first(parallax_2#38, false), first(dmu#39, false), first(dmu_limit#40, false)]
+Aggregate Attributes [7]: [first(cell#34L)()#41L, first(theta_arcsec#35)()#43, first(s_au#36)()#45, first(parallax_1#37)()#47, first(parallax_2#38)()#49, first(dmu#39)()#51, first(dmu_limit#40)()#53]
+Results [9]: [source_id_1#32L, source_id_2#33L, first(cell#34L)()#41L AS cell#42L, first(theta_arcsec#35)()#43 AS theta_arcsec#44, first(s_au#36)()#45 AS s_au#46, first(parallax_1#37)()#47 AS parallax_1#48, first(parallax_2#38)()#49 AS parallax_2#50, first(dmu#39)()#51 AS dmu#52, first(dmu_limit#40)()#53 AS dmu_limit#54]
+
+(10) AdaptiveSparkPlan
+Output [9]: [source_id_1#32L, source_id_2#33L, cell#42L, theta_arcsec#44, s_au#46, parallax_1#48, parallax_2#50, dmu#52, dmu_limit#54]
+Arguments: isFinalPlan=false
+
+

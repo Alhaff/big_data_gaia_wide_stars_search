@@ -1,0 +1,124 @@
+== Physical Plan ==
+AdaptiveSparkPlan (20)
++- Sort (19)
+   +- Exchange (18)
+      +- Project (17)
+         +- Project (16)
+            +- SortMergeJoin FullOuter (15)
+               :- Sort (7)
+               :  +- HashAggregate (6)
+               :     +- Exchange (5)
+               :        +- HashAggregate (4)
+               :           +- Project (3)
+               :              +- Filter (2)
+               :                 +- Scan parquet  (1)
+               +- Sort (14)
+                  +- HashAggregate (13)
+                     +- Exchange (12)
+                        +- HashAggregate (11)
+                           +- Project (10)
+                              +- Filter (9)
+                                 +- Scan parquet  (8)
+
+
+(1) Scan parquet 
+Output [2]: [theta_arcsec#937, s_au#938]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage3_pairs_clean.parquet]
+PushedFilters: [IsNotNull(theta_arcsec), GreaterThanOrEqual(theta_arcsec,0.5)]
+ReadSchema: struct<theta_arcsec:double,s_au:double>
+
+(2) Filter
+Input [2]: [theta_arcsec#937, s_au#938]
+Condition : (isnotnull(theta_arcsec#937) AND (theta_arcsec#937 >= 0.5))
+
+(3) Project
+Output [1]: [FLOOR((LOG10(s_au#938) * 2.0)) AS bin#953L]
+Input [2]: [theta_arcsec#937, s_au#938]
+
+(4) HashAggregate
+Input [1]: [bin#953L]
+Keys [1]: [bin#953L]
+Functions [1]: [partial_count(1)]
+Aggregate Attributes [1]: [count#990L]
+Results [2]: [bin#953L, count#991L]
+
+(5) Exchange
+Input [2]: [bin#953L, count#991L]
+Arguments: hashpartitioning(bin#953L, 200), ENSURE_REQUIREMENTS, [plan_id=5215]
+
+(6) HashAggregate
+Input [2]: [bin#953L, count#991L]
+Keys [1]: [bin#953L]
+Functions [1]: [count(1)]
+Aggregate Attributes [1]: [count(1)#965L]
+Results [2]: [bin#953L, count(1)#965L AS real#966L]
+
+(7) Sort
+Input [2]: [bin#953L, real#966L]
+Arguments: [bin#953L ASC NULLS FIRST], false, 0
+
+(8) Scan parquet 
+Output [2]: [theta_arcsec#946, s_au#947]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage5_pairs_shifted.parquet]
+PushedFilters: [IsNotNull(theta_arcsec), GreaterThanOrEqual(theta_arcsec,0.5)]
+ReadSchema: struct<theta_arcsec:double,s_au:double>
+
+(9) Filter
+Input [2]: [theta_arcsec#946, s_au#947]
+Condition : (isnotnull(theta_arcsec#946) AND (theta_arcsec#946 >= 0.5))
+
+(10) Project
+Output [1]: [FLOOR((LOG10(s_au#947) * 2.0)) AS bin#968L]
+Input [2]: [theta_arcsec#946, s_au#947]
+
+(11) HashAggregate
+Input [1]: [bin#968L]
+Keys [1]: [bin#968L]
+Functions [1]: [partial_count(1)]
+Aggregate Attributes [1]: [count#992L]
+Results [2]: [bin#968L, count#993L]
+
+(12) Exchange
+Input [2]: [bin#968L, count#993L]
+Arguments: hashpartitioning(bin#968L, 200), ENSURE_REQUIREMENTS, [plan_id=5217]
+
+(13) HashAggregate
+Input [2]: [bin#968L, count#993L]
+Keys [1]: [bin#968L]
+Functions [1]: [count(1)]
+Aggregate Attributes [1]: [count(1)#980L]
+Results [2]: [bin#968L, count(1)#980L AS chance#981L]
+
+(14) Sort
+Input [2]: [bin#968L, chance#981L]
+Arguments: [bin#968L ASC NULLS FIRST], false, 0
+
+(15) SortMergeJoin
+Left keys [1]: [bin#953L]
+Right keys [1]: [bin#968L]
+Join type: FullOuter
+Join condition: None
+
+(16) Project
+Output [3]: [coalesce(coalesce(bin#953L, bin#968L), 0) AS bin#983L, coalesce(real#966L, 0) AS real#984L, (cast(coalesce(chance#981L, 0) as double) * 0.5) AS chance#986]
+Input [4]: [bin#953L, real#966L, bin#968L, chance#981L]
+
+(17) Project
+Output [6]: [bin#983L, real#984L, chance#986, POWER(10.0, (cast(bin#983L as double) / 2.0)) AS s_from_au#987, POWER(10.0, (cast((bin#983L + 1) as double) / 2.0)) AS s_to_au#988, (chance#986 / cast(real#984L as double)) AS chance_fraction#989]
+Input [3]: [bin#983L, real#984L, chance#986]
+
+(18) Exchange
+Input [6]: [bin#983L, real#984L, chance#986, s_from_au#987, s_to_au#988, chance_fraction#989]
+Arguments: rangepartitioning(bin#983L ASC NULLS FIRST, 200), ENSURE_REQUIREMENTS, [plan_id=5227]
+
+(19) Sort
+Input [6]: [bin#983L, real#984L, chance#986, s_from_au#987, s_to_au#988, chance_fraction#989]
+Arguments: [bin#983L ASC NULLS FIRST], true, 0
+
+(20) AdaptiveSparkPlan
+Output [6]: [bin#983L, real#984L, chance#986, s_from_au#987, s_to_au#988, chance_fraction#989]
+Arguments: isFinalPlan=false
+
+

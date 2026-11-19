@@ -1,0 +1,111 @@
+== Physical Plan ==
+AdaptiveSparkPlan (19)
++- Project (18)
+   +- Project (17)
+      +- BroadcastHashJoin LeftOuter BuildRight (16)
+         :- Project (11)
+         :  +- SortMergeJoin FullOuter (10)
+         :     :- Sort (5)
+         :     :  +- Exchange (4)
+         :     :     +- Project (3)
+         :     :        +- Filter (2)
+         :     :           +- Scan parquet  (1)
+         :     +- Sort (9)
+         :        +- Exchange (8)
+         :           +- Project (7)
+         :              +- Scan parquet  (6)
+         +- BroadcastExchange (15)
+            +- Project (14)
+               +- Filter (13)
+                  +- Scan parquet  (12)
+
+
+(1) Scan parquet 
+Output [7]: [eb_id_1#1012L, eb_id_2#1013L, eb_parallax_1#1014, eb_parallax_2#1015, eb_s_au#1017, eb_r#1018, eb_type#1019]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/elbadry_catalog.parquet]
+PushedFilters: [IsNotNull(eb_parallax_1), IsNotNull(eb_parallax_2), IsNotNull(eb_s_au), GreaterThanOrEqual(eb_parallax_1,1.0), LessThanOrEqual(eb_parallax_1,10.0), GreaterThanOrEqual(eb_parallax_2,1.0), LessThanOrEqual(eb_parallax_2,10.0), LessThan(eb_s_au,50000.0)]
+ReadSchema: struct<eb_id_1:bigint,eb_id_2:bigint,eb_parallax_1:double,eb_parallax_2:double,eb_s_au:double,eb_r:double,eb_type:string>
+
+(2) Filter
+Input [7]: [eb_id_1#1012L, eb_id_2#1013L, eb_parallax_1#1014, eb_parallax_2#1015, eb_s_au#1017, eb_r#1018, eb_type#1019]
+Condition : (((((((((isnotnull(eb_parallax_1#1014) AND isnotnull(eb_parallax_2#1015)) AND isnotnull(eb_s_au#1017)) AND (((((((((((((((((((((((shiftright(eb_id_1#1012L, 43) >= 114329) AND (shiftright(eb_id_1#1012L, 43) <= 116223)) OR ((shiftright(eb_id_1#1012L, 43) >= 116224) AND (shiftright(eb_id_1#1012L, 43) <= 118619))) OR ((shiftright(eb_id_1#1012L, 43) >= 106071) AND (shiftright(eb_id_1#1012L, 43) <= 106913))) OR ((shiftright(eb_id_1#1012L, 43) >= 104417) AND (shiftright(eb_id_1#1012L, 43) <= 106070))) OR ((shiftright(eb_id_1#1012L, 43) >= 102418) AND (shiftright(eb_id_1#1012L, 43) <= 104416))) OR ((shiftright(eb_id_1#1012L, 43) >= 111410) AND (shiftright(eb_id_1#1012L, 43) <= 112700))) OR ((shiftright(eb_id_1#1012L, 43) >= 90621) AND (shiftright(eb_id_1#1012L, 43) <= 93880))) OR ((shiftright(eb_id_1#1012L, 43) >= 110425) AND (shiftright(eb_id_1#1012L, 43) <= 111409))) OR ((shiftright(eb_id_1#1012L, 43) >= 123647) AND (shiftright(eb_id_1#1012L, 43) <= 125199))) OR ((shiftright(eb_id_1#1012L, 43) >= 118620) AND (shiftright(eb_id_1#1012L, 43) <= 121499))) OR ((shiftright(eb_id_1#1012L, 43) >= 80128) AND (shiftright(eb_id_1#1012L, 43) <= 82787))) OR ((shiftright(eb_id_1#1012L, 43) >= 113460) AND (shiftright(eb_id_1#1012L, 43) <= 114328))) OR ((shiftright(eb_id_1#1012L, 43) >= 101393) AND (shiftright(eb_id_1#1012L, 43) <= 102417))) OR ((shiftright(eb_id_1#1012L, 43) >= 93881) AND (shiftright(eb_id_1#1012L, 43) <= 97402))) OR ((shiftright(eb_id_1#1012L, 43) >= 107445) AND (shiftright(eb_id_1#1012L, 43) <= 108275))) OR ((shiftright(eb_id_1#1012L, 43) >= 112701) AND (shiftright(eb_id_1#1012L, 43) <= 113459))) OR ((shiftright(eb_id_1#1012L, 43) >= 121500) AND (shiftright(eb_id_1#1012L, 43) <= 123646))) OR ((shiftright(eb_id_1#1012L, 43) >= 109811) AND (shiftright(eb_id_1#1012L, 43) <= 110424))) OR ((shiftright(eb_id_1#1012L, 43) >= 125200) AND (shiftright(eb_id_1#1012L, 43) <= 126263))) OR ((shiftright(eb_id_1#1012L, 43) >= 126264) AND (shiftright(eb_id_1#1012L, 43) <= 127785))) OR ((shiftright(eb_id_1#1012L, 43) >= 77687) AND (shiftright(eb_id_1#1012L, 43) <= 80127))) OR ((shiftright(eb_id_1#1012L, 43) >= 99874) AND (shiftright(eb_id_1#1012L, 43) <= 100751)))) AND (((((((((((((((((((((((shiftright(eb_id_2#1013L, 43) >= 114329) AND (shiftright(eb_id_2#1013L, 43) <= 116223)) OR ((shiftright(eb_id_2#1013L, 43) >= 116224) AND (shiftright(eb_id_2#1013L, 43) <= 118619))) OR ((shiftright(eb_id_2#1013L, 43) >= 106071) AND (shiftright(eb_id_2#1013L, 43) <= 106913))) OR ((shiftright(eb_id_2#1013L, 43) >= 104417) AND (shiftright(eb_id_2#1013L, 43) <= 106070))) OR ((shiftright(eb_id_2#1013L, 43) >= 102418) AND (shiftright(eb_id_2#1013L, 43) <= 104416))) OR ((shiftright(eb_id_2#1013L, 43) >= 111410) AND (shiftright(eb_id_2#1013L, 43) <= 112700))) OR ((shiftright(eb_id_2#1013L, 43) >= 90621) AND (shiftright(eb_id_2#1013L, 43) <= 93880))) OR ((shiftright(eb_id_2#1013L, 43) >= 110425) AND (shiftright(eb_id_2#1013L, 43) <= 111409))) OR ((shiftright(eb_id_2#1013L, 43) >= 123647) AND (shiftright(eb_id_2#1013L, 43) <= 125199))) OR ((shiftright(eb_id_2#1013L, 43) >= 118620) AND (shiftright(eb_id_2#1013L, 43) <= 121499))) OR ((shiftright(eb_id_2#1013L, 43) >= 80128) AND (shiftright(eb_id_2#1013L, 43) <= 82787))) OR ((shiftright(eb_id_2#1013L, 43) >= 113460) AND (shiftright(eb_id_2#1013L, 43) <= 114328))) OR ((shiftright(eb_id_2#1013L, 43) >= 101393) AND (shiftright(eb_id_2#1013L, 43) <= 102417))) OR ((shiftright(eb_id_2#1013L, 43) >= 93881) AND (shiftright(eb_id_2#1013L, 43) <= 97402))) OR ((shiftright(eb_id_2#1013L, 43) >= 107445) AND (shiftright(eb_id_2#1013L, 43) <= 108275))) OR ((shiftright(eb_id_2#1013L, 43) >= 112701) AND (shiftright(eb_id_2#1013L, 43) <= 113459))) OR ((shiftright(eb_id_2#1013L, 43) >= 121500) AND (shiftright(eb_id_2#1013L, 43) <= 123646))) OR ((shiftright(eb_id_2#1013L, 43) >= 109811) AND (shiftright(eb_id_2#1013L, 43) <= 110424))) OR ((shiftright(eb_id_2#1013L, 43) >= 125200) AND (shiftright(eb_id_2#1013L, 43) <= 126263))) OR ((shiftright(eb_id_2#1013L, 43) >= 126264) AND (shiftright(eb_id_2#1013L, 43) <= 127785))) OR ((shiftright(eb_id_2#1013L, 43) >= 77687) AND (shiftright(eb_id_2#1013L, 43) <= 80127))) OR ((shiftright(eb_id_2#1013L, 43) >= 99874) AND (shiftright(eb_id_2#1013L, 43) <= 100751)))) AND (eb_parallax_1#1014 >= 1.0)) AND (eb_parallax_1#1014 <= 10.0)) AND (eb_parallax_2#1015 >= 1.0)) AND (eb_parallax_2#1015 <= 10.0)) AND (eb_s_au#1017 < 50000.0))
+
+(3) Project
+Output [6]: [least(eb_id_1#1012L, eb_id_2#1013L) AS id_a#1021L, greatest(eb_id_1#1012L, eb_id_2#1013L) AS id_b#1022L, eb_s_au#1017, eb_r#1018, eb_type#1019, true AS in_theirs#1023]
+Input [7]: [eb_id_1#1012L, eb_id_2#1013L, eb_parallax_1#1014, eb_parallax_2#1015, eb_s_au#1017, eb_r#1018, eb_type#1019]
+
+(4) Exchange
+Input [6]: [id_a#1021L, id_b#1022L, eb_s_au#1017, eb_r#1018, eb_type#1019, in_theirs#1023]
+Arguments: hashpartitioning(id_a#1021L, id_b#1022L, 200), ENSURE_REQUIREMENTS, [plan_id=5489]
+
+(5) Sort
+Input [6]: [id_a#1021L, id_b#1022L, eb_s_au#1017, eb_r#1018, eb_type#1019, in_theirs#1023]
+Arguments: [id_a#1021L ASC NULLS FIRST, id_b#1022L ASC NULLS FIRST], false, 0
+
+(6) Scan parquet 
+Output [3]: [source_id_1#994L, source_id_2#995L, s_au#998]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage2_pairs.parquet]
+ReadSchema: struct<source_id_1:bigint,source_id_2:bigint,s_au:double>
+
+(7) Project
+Output [4]: [source_id_1#994L AS id_a#1024L, source_id_2#995L AS id_b#1025L, s_au#998, true AS in_stage2#1026]
+Input [3]: [source_id_1#994L, source_id_2#995L, s_au#998]
+
+(8) Exchange
+Input [4]: [id_a#1024L, id_b#1025L, s_au#998, in_stage2#1026]
+Arguments: hashpartitioning(id_a#1024L, id_b#1025L, 200), ENSURE_REQUIREMENTS, [plan_id=5490]
+
+(9) Sort
+Input [4]: [id_a#1024L, id_b#1025L, s_au#998, in_stage2#1026]
+Arguments: [id_a#1024L ASC NULLS FIRST, id_b#1025L ASC NULLS FIRST], false, 0
+
+(10) SortMergeJoin
+Left keys [2]: [id_a#1021L, id_b#1022L]
+Right keys [2]: [id_a#1024L, id_b#1025L]
+Join type: FullOuter
+Join condition: None
+
+(11) Project
+Output [8]: [coalesce(id_a#1021L, id_a#1024L) AS id_a#1032L, coalesce(id_b#1022L, id_b#1025L) AS id_b#1033L, eb_s_au#1017, eb_r#1018, eb_type#1019, in_theirs#1023, s_au#998, in_stage2#1026]
+Input [10]: [id_a#1021L, id_b#1022L, eb_s_au#1017, eb_r#1018, eb_type#1019, in_theirs#1023, id_a#1024L, id_b#1025L, s_au#998, in_stage2#1026]
+
+(12) Scan parquet 
+Output [2]: [source_id_2#1003L, source_id_1#1004L]
+Batched: true
+Location: InMemoryFileIndex [file:/work/output/stage3_pairs_clean.parquet]
+PushedFilters: [IsNotNull(source_id_1), IsNotNull(source_id_2)]
+ReadSchema: struct<source_id_2:bigint,source_id_1:bigint>
+
+(13) Filter
+Input [2]: [source_id_2#1003L, source_id_1#1004L]
+Condition : (isnotnull(source_id_1#1004L) AND isnotnull(source_id_2#1003L))
+
+(14) Project
+Output [3]: [source_id_1#1004L AS id_a#1028L, source_id_2#1003L AS id_b#1029L, true AS in_stage3#1030]
+Input [2]: [source_id_2#1003L, source_id_1#1004L]
+
+(15) BroadcastExchange
+Input [3]: [id_a#1028L, id_b#1029L, in_stage3#1030]
+Arguments: HashedRelationBroadcastMode(List(input[0, bigint, true], input[1, bigint, true]),false), [plan_id=5496]
+
+(16) BroadcastHashJoin
+Left keys [2]: [id_a#1032L, id_b#1033L]
+Right keys [2]: [id_a#1028L, id_b#1029L]
+Join type: LeftOuter
+Join condition: None
+
+(17) Project
+Output [10]: [id_a#1032L, id_b#1033L, eb_s_au#1017, eb_r#1018, eb_type#1019, coalesce(in_theirs#1023, false) AS in_theirs#1034, s_au#998, coalesce(in_stage2#1026, false) AS in_stage2#1035, coalesce(in_stage3#1030, false) AS in_stage3#1036, coalesce(eb_s_au#1017, s_au#998) AS s#1037]
+Input [11]: [id_a#1032L, id_b#1033L, eb_s_au#1017, eb_r#1018, eb_type#1019, in_theirs#1023, s_au#998, in_stage2#1026, id_a#1028L, id_b#1029L, in_stage3#1030]
+
+(18) Project
+Output [12]: [id_a#1032L, id_b#1033L, eb_s_au#1017, eb_r#1018, eb_type#1019, in_theirs#1034, s_au#998, in_stage2#1035, in_stage3#1036, s#1037, FLOOR((LOG10(s#1037) * 2.0)) AS bin#1038L, (in_theirs#1034 AND (eb_r#1018 < 0.1)) AS high_conf#1039]
+Input [10]: [id_a#1032L, id_b#1033L, eb_s_au#1017, eb_r#1018, eb_type#1019, in_theirs#1034, s_au#998, in_stage2#1035, in_stage3#1036, s#1037]
+
+(19) AdaptiveSparkPlan
+Output [12]: [id_a#1032L, id_b#1033L, eb_s_au#1017, eb_r#1018, eb_type#1019, in_theirs#1034, s_au#998, in_stage2#1035, in_stage3#1036, s#1037, bin#1038L, high_conf#1039]
+Arguments: isFinalPlan=false
+
+
