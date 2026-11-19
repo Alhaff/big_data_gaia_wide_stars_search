@@ -1,5 +1,7 @@
 data/
-output/
+output/*
+!output/figures/
+!output/screenshots/
 /logs/
 report_draft.md
 spark-events/*
@@ -9,3 +11,5 @@ __pycache__/
 2101.05282v3.pdf
 previous_info.md
 .env
+docs/manual.md
+docs/run_guide.md

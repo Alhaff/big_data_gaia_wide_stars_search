@@ -210,7 +210,7 @@ make metrics        # таблиця з усіма замірами й меді�
 
 ```bash
 make dirty          # приклади відкинутих рядків -> docs/dirty_examples.md (без Spark)
-make plots          # рисунки з результатів етапів 6 і 7 -> docs/figures/
+make plots          # рисунки з результатів повного запуску в evidence/ -> output/figures/
 make skew           # перекіс на кожному shuffle зі збереженого журналу в evidence/ (без Spark, потрібна утиліта zstd)
 make history-down   # зупинити History Server
 ```
@@ -252,11 +252,10 @@ scripts/plot_results.py      рисунки з результатів етапі
 sample/                      вибірка (входить у здачу)
 dataset/                     MD5, список файлів і заміри повного датасету
 evidence/                    докази повного запуску: журнал Spark, плани, метрики, експеримент
-docs/manual.md               теорія
-docs/run_guide.md            покрокова інструкція: що запускати і що куди писати у звіт
 docs/logs/                   скриншоти запусків
 report.md                    звіт
-output/, spark-events/       результати й журнали запусків (не в git)
+output/figures/              рисунки для звіту
+output/, spark-events/       результати й журнали запусків (не в git, крім output/figures/)
 data/                        дані за замовчуванням (не в git)
 ```
 

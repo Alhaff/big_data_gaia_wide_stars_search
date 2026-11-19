@@ -87,7 +87,5 @@ skew:            ## shuffle skew from the saved event log in evidence/
 dirty:           ## examples of rejected rows -> docs/dirty_examples.md
 	$(PYTHON) scripts/dirty_examples.py > docs/dirty_examples.md
 
-plots: init      ## figures -> docs/figures/
+plots: init      ## figures from the full run in evidence/ -> output/figures/
 	$(RUN) spark python3 scripts/plot_results.py
-	mkdir -p docs/figures
-	cp output/figures/*.png docs/figures/
